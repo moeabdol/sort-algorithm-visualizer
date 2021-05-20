@@ -145,14 +145,14 @@ class DropdownBox:
         option_text = base_font.render(self.options[self.DEFAULT_OPTION], True, grey)
         screen.blit(option_text, option_text.get_rect(center=self.rect.center))
 
-        if True:
+        if self.active:
             column = 0
             index = 0
             rect_start = self.rect.y - self.rect.h
             for i in range(self.DEFAULT_OPTION + 1, len(self.options)):
                 rect = self.rect.copy()
                 rect.y -= (index + 1) * self.rect.h
-                if rect.y <= self.dropdown_rect.y:
+                if rect.y <= 0:
                     column += 1
                     index = 0
                     rect.y = rect_start
@@ -164,6 +164,35 @@ class DropdownBox:
                 pygame.draw.rect(screen, self.color, rect, 3)
                 option_text = base_font.render(self.options[i][:12], True, option_color)
                 screen.blit(option_text, option_text.get_rect(center=rect.center))
+
+    def update(self):
+        self.rect.x = delay_box.rect.x + delay_box.rect.w + 20
+        mouse_pos = pygame.mouse.get_pos()
+        column = 0
+        index = 0
+        rect_start = self.rect.y - self.rect.h
+        for i in range(len(self.options) - 1):
+            rect = self.rect.copy()
+            rect.y -= (index + 1) * self.rect.h
+            if rect.y <= 0:
+                column += 1
+                index = 0
+                rect.y = rect_start
+            index += 1
+            rect.x  = self.rect.x + column * self.rect.w
+
+            if rect.collidepoint(mouse_pos):
+                self.active_option = i
+
+        if pygame.mouse.get_pressed() != (0, 0, 0):
+            if self.active and self.dropdown_rect.collidepoint(mouse_pos):
+                # Swap
+                self.options[self.DEFAULT_OPTION], self.options[self.active_option + 1] = self.options[self.active_option + 1], self.options[self.DEFAULT_OPTION]
+
+                self.active_option = - 1
+            self.active = self.rect.collidepoint(mouse_pos)
+        if not self.active:
+            self.active_option = - 1
 
 size_box = TextBox("Size", grey, (30, 440, 50, 50), "100")
 delay_box = SliderBox("Delay", grey, (105, 440, 112, 50))
@@ -188,4 +217,5 @@ def draw_ui():
 def update_ui(event):
     size_box.update(event)
     delay_box.update()
+    algorithm_box.update()
     start_button.update()
