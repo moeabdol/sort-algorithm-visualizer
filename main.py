@@ -1,6 +1,6 @@
 import pygame
 import display
-from algs import algorithm_dict, run_algorithm 
+from algs import algorithm_dict, run_algorithm
 from random import randint
 
 
