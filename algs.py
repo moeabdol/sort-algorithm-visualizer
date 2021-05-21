@@ -45,3 +45,7 @@ algorithm_dict = {
     "strand": strand_sort,
     "tim": tim_sort,
 }
+
+
+def run_algorithm(algorithm, array):
+    return algorithm_dict[algorithm](array)
