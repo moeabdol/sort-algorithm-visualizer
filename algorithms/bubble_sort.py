@@ -1,7 +1,7 @@
 from display import draw_algorithm_step
 
 
-def bubble_sort(array):
+def bubble_sort(array, *args):
     size = len(array)
     for i in range(size):
         for j in range(size - i - 1):

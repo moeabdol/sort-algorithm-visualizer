@@ -47,5 +47,5 @@ algorithm_dict = {
 }
 
 
-def run_algorithm(algorithm, array):
-    return algorithm_dict[algorithm](array)
+def run_algorithm(algorithm, numbers):
+    return algorithm_dict[algorithm](numbers, 0, len(numbers) - 1)
